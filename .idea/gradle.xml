@@ -22,11 +22,10 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/microservicio-notificacion/microservicio-notificacion" />
-        <option name="gradleJvm" value="17" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/microservicio-notificacion1/microservicio-notificacion" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/microservicio-notificacion/microservicio-notificacion" />
+            <option value="$PROJECT_DIR$/microservicio-notificacion1/microservicio-notificacion" />
           </set>
         </option>
       </GradleProjectSettings>
