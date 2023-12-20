@@ -40,10 +40,18 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/servidor-eureka" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/servidor-configuracion/servidor-config" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/servidor-eureka" />
+            <option value="$PROJECT_DIR$/servidor-configuracion/servidor-config" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/servidor-eureka1/servidor-eureka" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/servidor-eureka1/servidor-eureka" />
           </set>
         </option>
       </GradleProjectSettings>
