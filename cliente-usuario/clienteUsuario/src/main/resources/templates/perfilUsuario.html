@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>ProyectoFinal</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/Bootstrap-4---Payment-Form.css">
+    <link rel="stylesheet" href="/assets/css/Bootstrap-4---Table-Fixed-Header.css">
+    <link rel="stylesheet" href="/assets/css/Data-Table-styles.css">
+    <link rel="stylesheet" href="/assets/css/Data-Table.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/assets/css/Login-Form-Basic-icons.css">
+    <link rel="stylesheet" href="/assets/css/Ludens-Users---3-Profile.css">
+    <link rel="stylesheet" href="/assets/css/Table-With-Search-search-table.css">
+    <link rel="stylesheet" href="/assets/css/Table-With-Search.css">
+</head>
+
+<body>
+    <main class="page" style="min-height: 100%;">
+        <section class="clean-block about-us">
+            <div class="row" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col">
+                    <div th:replace="plantilla.html::menu"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-right: 0px;margin-left: 0px;padding-top: 0px;margin-top: 27px;">
+                <div class="col"></div>
+            </div>
+            <div class="row justify-content-center" style="margin-right: 0px;margin-left: 0px;">
+                <div class="col-sm-6 col-lg-4" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="card clean-card text-center" style="margin-left: 30px;padding-left: 0px;">
+                        <div class="card-body info" style="margin-left: 17px;padding-right: 103px;padding-left: 141px;">
+                            <div class="row" style="margin-top: -24px;">
+                                <div class="col"><img src="/assets/img/clipboard-image.png" width="77" height="78" style="padding-top: 0px;margin-top: 21px;"></div>
+                                <div class="col-md-12" style="margin-top: 22px;">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Nombre</span></strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels"><span style="color: rgb(0, 0, 0);">nombre</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xxl-6">
+                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Apellido</span></strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels"><span style="color: rgb(0, 0, 0);">apellido</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Usuario</span></strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels"><span style="color: rgb(0, 0, 0);">usuario</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Email</span></strong></p>
+                                        </div>
+                                        <div class="col-xxl-6">
+                                            <p class="labels"><span style="color: rgb(0, 0, 0);">email&nbsp;</span></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">&nbsp;Rol</span></strong></p>
+                                        </div>
+                                        <div class="col">
+                                            <p class="labels"><span style="color: rgb(0, 0, 0);">cliente</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12"><a class="btn btn-success" role="button" href="editProfile.html"><i class="fas fa-pencil-alt"></i>&nbsp;Editar</a><a class="btn btn-success" role="button" href="editProfile.html" style="margin-top: 3px;"><i class="fas fa-trash"></i>&nbsp;Borrar</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="padding-left: 34px;padding-right: 205px;">
+                    <div class="table-responsive" style="padding-top: 0px;margin-right: 0px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p><span style="color: rgb(73, 239, 159);">Eventos proximos</span></p>
+                                            </div>
+                                        </div><span style="color: rgb(248, 243, 243);">Servicio</span>
+                                    </th>
+                                    <th><span style="color: rgb(239, 235, 235);">Fecha</span></th>
+                                    <th><br><strong><span style="color: rgb(239, 235, 235);">Encargado</span></strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 1</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 2</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 3</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 4</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive" style="padding-top: 0px;margin-right: 0px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p><span style="color: rgb(73, 239, 159);">Eventos pasados</span></p>
+                                            </div>
+                                        </div><span style="color: rgb(248, 243, 243);">Servicio</span>
+                                    </th>
+                                    <th><span style="color: rgb(239, 235, 235);">Fecha</span></th>
+                                    <th><br><strong><span style="color: rgb(239, 235, 235);">Encargado</span></strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 1</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 2</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 3</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Cell 4</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+    <script src="/assets/js/DataTable---Fully-BSS-Editable-style.js"></script>
+    <script src="/assets/js/bold-and-dark.js"></script>
+    <script src="/assets/js/Bootstrap-4---Payment-Form-script.js"></script>
+    <script src="/assets/js/Table-With-Search-search-table.js"></script>
+
+    <!-- Libreria Vuejs -->
+    <script>
+
+        /**
+         * En caso de utilizar con API diferentes al dominio indicar la URL.
+         */
+        const NOMBRE_KEY = "API_URL";
+        if(localStorage.getItem(NOMBRE_KEY) == null){
+            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081/user")
+        }
+        const URL_API = localStorage.getItem(NOMBRE_KEY);
+
+        const { createApp } = Vue;
+
+        const app = createApp({
+
+            data(){
+                return {
+
+                    titulo: "Creación de Estudiante",
+                    editando: false,
+                    nuevo: {
+                        id: '',
+                        nombre: '',
+                        apellido: '',
+                        email: '',
+                        username: '',
+                        password: '',
+                        rols: ''
+
+
+                    },
+                    clientes: [],
+                    modal: ""
+
+                }
+            },
+
+            mounted() {
+                console.log("Iniciando la aplicación en mounted: "+this.titulo);
+                this.$nextTick(function () {  //garantizo que todos los elementos están renderizados.
+                    console.log("Cargando todo el render del proyecto");
+                    this.listaClientes();
+                    this.modal = new bootstrap.Modal(document.getElementById('modal-1'));
+                });
+            },
+
+
+            methods: {
+
+                listaClientes(){
+                    console.log("Cargando lista de Estudiante");
+                    axios.get(URL_API).then(response => {
+                        //
+                        console.log("Recuperando información del servidor");
+                        //
+                        this.clientes = response.data;
+                    }).catch(error => { console.log(error); });
+                },
+
+
+            }
+        });
+
+        /**
+         *
+         */
+        app.mount('#app');
+
+
+    </script>
+
+</body>
+
+</html>
