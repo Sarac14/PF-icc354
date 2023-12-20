@@ -8,7 +8,7 @@
     <file type="web" url="file://$PROJECT_DIR$/microservicio-usuario/microservicio-usuario" />
     <file type="web" url="file://$PROJECT_DIR$/servidor-configuracion/servidor-config" />
     <file type="web" url="file://$PROJECT_DIR$/servidor-eureka1/servidor-eureka" />
-    <file type="web" url="file://$PROJECT_DIR$/servidor-gateway" />
+    <file type="web" url="file://$PROJECT_DIR$/servidor-perimetral/servidor-gateway" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

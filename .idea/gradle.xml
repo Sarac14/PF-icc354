@@ -56,10 +56,10 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/servidor-gateway" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/servidor-perimetral/servidor-gateway" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/servidor-gateway" />
+            <option value="$PROJECT_DIR$/servidor-perimetral/servidor-gateway" />
           </set>
         </option>
       </GradleProjectSettings>
