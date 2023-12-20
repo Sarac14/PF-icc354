@@ -3,7 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/microservicio-notificacion/microservicio-notificacion" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/servidor-config" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/servidor-eureka" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/servidor-gateway" vcs="Git" />
   </component>
