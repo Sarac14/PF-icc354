@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>ProyectoFinal</title>
+    <title>Mi cuenta</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
@@ -19,72 +19,88 @@
     <link rel="stylesheet" href="/assets/css/Ludens-Users---3-Profile.css">
     <link rel="stylesheet" href="/assets/css/Table-With-Search-search-table.css">
     <link rel="stylesheet" href="/assets/css/Table-With-Search.css">
+
+    <!-- Required scripts -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+
 </head>
 
 <body>
+<div id="app">
     <main class="page" style="min-height: 100%;">
         <section class="clean-block about-us">
             <div class="row" style="margin-right: 0px;margin-left: 0px;">
                 <div class="col">
-                    <div th:replace="plantilla.html::menu"></div>
+                    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav-1">
+                        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-sm bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center me-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-camera-reels" style="font-size: 16px;">
+                        <path d="M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM1 3a2 2 0 1 0 4 0 2 2 0 0 0-4 0z"></path>
+                        <path d="M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7zm6 8.73V7.27l-3.5 1.555v4.35l3.5 1.556zM1 8v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1z"></path>
+                        <path d="M9 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM7 3a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"></path>
+                    </svg></span><span>S &amp; H MULTIMEDIA</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                            <div class="collapse navbar-collapse" id="navcol-1" style="margin-left: 233px;">
+                                <ul class="navbar-nav mx-auto">
+                                    <li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/paquetes">Paquetes</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/mi-cuenta">Mi cuenta</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/carrito"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-cart-check-fill" style="font-size: 21px;">
+                                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-1.646-7.646-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708z"></path>
+                                    </svg></a></li>
+                                    <!--                    <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>-->
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Admin
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li><a class="dropdown-item" href="/usuarios">Usuarios</a></li>
+                                            <li><a class="dropdown-item" href="/compra">Compra</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="nav-item"></li>
+                                </ul>
+                                <a class="btn btn-primary shadow" role="button" id="authButton" href="/login">Cerrar Sesión</a>
+
+                            </div>
+                        </div>
+                    </nav>
                 </div>
             </div>
             <div class="row" style="margin-right: 0px;margin-left: 0px;padding-top: 0px;margin-top: 27px;">
                 <div class="col"></div>
             </div>
-            <div class="row justify-content-center" style="margin-right: 0px;margin-left: 0px;">
-                <div class="col-sm-6 col-lg-4" style="padding-right: 0px;padding-left: 0px;">
-                    <div class="card clean-card text-center" style="margin-left: 30px;padding-left: 0px;">
-                        <div class="card-body info" style="margin-left: 17px;padding-right: 103px;padding-left: 141px;">
-                            <div class="row" style="margin-top: -24px;">
-                                <div class="col"><img src="/assets/img/clipboard-image.png" width="77" height="78" style="padding-top: 0px;margin-top: 21px;"></div>
-                                <div class="col-md-12" style="margin-top: 22px;">
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Nombre</span></strong></p>
-                                        </div>
-                                        <div class="col">
-                                            <p class="labels"><span style="color: rgb(0, 0, 0);">nombre</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xxl-6">
-                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Apellido</span></strong></p>
-                                        </div>
-                                        <div class="col">
-                                            <p class="labels"><span style="color: rgb(0, 0, 0);">apellido</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Usuario</span></strong></p>
-                                        </div>
-                                        <div class="col">
-                                            <p class="labels"><span style="color: rgb(0, 0, 0);">usuario</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">Email</span></strong></p>
-                                        </div>
-                                        <div class="col-xxl-6">
-                                            <p class="labels"><span style="color: rgb(0, 0, 0);">email&nbsp;</span></p>
-                                        </div>
-                                        <div class="col">
-                                            <p class="labels"><strong><span style="color: rgb(0, 0, 0);">&nbsp;Rol</span></strong></p>
-                                        </div>
-                                        <div class="col">
-                                            <p class="labels"><span style="color: rgb(0, 0, 0);">cliente</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12"><a class="btn btn-success" role="button" href="editProfile.html"><i class="fas fa-pencil-alt"></i>&nbsp;Editar</a><a class="btn btn-success" role="button" href="editProfile.html" style="margin-top: 3px;"><i class="fas fa-trash"></i>&nbsp;Borrar</a></div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row justify-content-center" style="margin-right: 0px;margin-left: 0px;" >
+                <div class="col-sm-6 col-lg-4 mx-auto">
+                    <div class="card clean-card text-center">
+                        <div class="card-body info">
+                            <img src="/assets/img/clipboard-image.png" class="img-fluid" style="max-width: 100px; max-height: 100px; margin-top: 21px;">
+
+                            <p class="labels" style="color: black"><strong>Nombre</strong></p>
+                            <p class="labels" style="color: black">{{cliente.nombre}}</p>
+
+                            <p class="labels" style="color: black"><strong>Apellido</strong></p>
+                            <p class="labels" style="color: black">{{cliente.apellido}}</p>
+
+                            <p class="labels" style="color: black"><strong>Usuario</strong></p>
+                            <p class="labels" style="color: black">{{cliente.username}}</p>
+
+                            <p class="labels" style="color: black"><strong>Email</strong></p>
+                            <p class="labels" style="color: black">{{cliente.email}}</p>
+
+                            <p class="labels" style="color: black"><strong>Rol</strong></p>
+                            <p class="labels" style="color: black">{{cliente.rols[0].role}}</p>
+
+<!--                            <a class="btn btn-success me-3" role="button" ><i class="fas fa-pencil-alt"></i>&nbsp;Editar</a>-->
+                            <a class="btn btn-success me-3" role="button" @click="editarCliente"><i class="fas fa-pencil-alt"></i>&nbsp;Editar</a>
+                            <a class="btn btn-success" role="button" @click.prevent="eliminarUsuario"><i class="fas fa-trash"></i>&nbsp;Borrar</a>
+
                         </div>
                     </div>
                 </div>
+
+
                 <div class="col" style="padding-left: 34px;padding-right: 205px;">
                     <div class="table-responsive" style="padding-top: 0px;margin-right: 0px;">
                         <table class="table">
@@ -145,9 +161,85 @@
                         </table>
                     </div>
                 </div>
+                <div id="modal-1" class="modal fade modal-dialog modal-dialog-centered" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5>{{titulo}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#modal-1" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form @submit.prevent="crearActualizarCliente">
+
+                                    <!-- Username       -->
+                                    <div class="mb-3">
+                                        <label for="g1" class="form-label">Username</label>
+                                        <input class="form-control"
+                                               id = "g1"
+                                               v-model="nuevo.username"
+                                               type="text"
+                                               required
+                                        ></input>
+                                    </div>
+
+                                    <!-- Email            -->
+                                    <div class="mb-3">
+                                        <label for="g2" class="form-label">Email</label>
+                                        <input class="form-control"
+                                               id = "g2"
+                                               v-model="nuevo.email"
+                                               type="email"
+                                               required
+                                        ></input>
+                                    </div>
+
+                                    <!-- password            -->
+                                    <div class="mb-3">
+                                        <label for="g3" class="form-label">Password</label>
+                                        <input class="form-control"
+                                               id = "g3"
+                                               v-model="nuevo.password"
+                                               type="password"
+                                               required
+                                        ></input>
+                                    </div>
+
+                                    <!-- Nombre       -->
+                                    <div class="mb-3">
+                                        <label for="g1" class="form-label">Nombre</label>
+                                        <input class="form-control"
+                                               id = "g4"
+                                               v-model="nuevo.nombre"
+                                               type="text"
+                                               required
+                                        ></input>
+                                    </div>
+
+                                    <!-- Apellido       -->
+                                    <div class="mb-3">
+                                        <label for="g1" class="form-label">Apellido</label>
+                                        <input class="form-control"
+                                               id = "g5"
+                                               v-model="nuevo.apellido"
+                                               type="text"
+                                               required
+                                        ></input>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                    <button type="reset" class="btn btn-danger">Limpiar</button>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </section>
     </main>
+</div>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="/assets/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
@@ -167,6 +259,12 @@
     <script src="/assets/js/Bootstrap-4---Payment-Form-script.js"></script>
     <script src="/assets/js/Table-With-Search-search-table.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+
+
     <!-- Libreria Vuejs -->
     <script>
 
@@ -175,7 +273,7 @@
          */
         const NOMBRE_KEY = "API_URL";
         if(localStorage.getItem(NOMBRE_KEY) == null){
-            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081/user")
+            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081")
         }
         const URL_API = localStorage.getItem(NOMBRE_KEY);
 
@@ -186,21 +284,23 @@
             data(){
                 return {
 
-                    titulo: "Creación de Estudiante",
+                    // titulo: "Creación de Estudiante",
                     editando: false,
                     nuevo: {
-                        id: '',
+                       // id: '',
                         nombre: '',
                         apellido: '',
                         email: '',
                         username: '',
                         password: '',
-                        rols: ''
+                      //  rols: ''
 
 
                     },
-                    clientes: [],
-                    modal: ""
+                    // clientes: [],
+                    modal: "",
+                    cliente: "",
+
 
                 }
             },
@@ -209,25 +309,88 @@
                 console.log("Iniciando la aplicación en mounted: "+this.titulo);
                 this.$nextTick(function () {  //garantizo que todos los elementos están renderizados.
                     console.log("Cargando todo el render del proyecto");
-                    this.listaClientes();
-                    this.modal = new bootstrap.Modal(document.getElementById('modal-1'));
+                  //  this.listaClientes();
+                    this.obtenerDatosCliente();
+                    // this.modal = new bootstrap.Modal(document.getElementById('modal-1'), {
+                    //     keyboard: true
+                    // });
+
                 });
             },
 
 
             methods: {
 
-                listaClientes(){
-                    console.log("Cargando lista de Estudiante");
-                    axios.get(URL_API).then(response => {
-                        //
-                        console.log("Recuperando información del servidor");
-                        //
-                        this.clientes = response.data;
-                    }).catch(error => { console.log(error); });
+                obtenerDatosCliente() {
+                    // Obtener el token del localStorage
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        console.log("No hay token en el almacenamiento local.");
+                        return;
+                    }
+
+                    const decoded = jwt_decode(token);
+                    const userId = decoded.idUser;
+
+                    // Hacer la solicitud GET para obtener los datos del cliente
+                    const url = `${URL_API}/user/${userId}`;
+                    console.log(url);
+                    axios.get(url).then(response => {
+                        this.cliente = response.data;
+                    }).catch(error => {
+                        console.error("Error al obtener los datos del cliente: ", error);
+                    });
                 },
 
+                eliminarUsuario() {
+                    const confirmed = confirm("¿Desea elminiar esta cuenta?");
+                    if(confirmed) {
+                        const token = localStorage.getItem('token');
+                        if (!token) {
+                            console.log("No hay token en el almacenamiento local.");
+                            return;
+                        }
 
+                        const decoded = jwt_decode(token);
+                        const userId = decoded.idUser;
+
+                        // Hacer la solicitud GET para obtener los datos del cliente
+                        const url = `${URL_API}/user/${userId}`;
+
+                        axios.delete(url).then(response => {
+                            localStorage.removeItem('token');
+                            window.location.href = '/home';
+                        }).catch(error => console.log(error));
+                    }
+                },
+                crearActualizarCliente() {
+
+                        // Estamos en modo de edición
+                        const url = `${URL_API}/user/${this.cliente.id}`;
+
+                        axios.put(url, this.nuevo)
+                            .then(response => {
+                                window.location.href = '/mi-cuenta';
+                            })
+                            .catch(error => {
+                                // Manejar el error adecuadamente
+                                console.error("Hubo un error al actualizar el cliente: ", error);
+                                alert("No se pudo actualizar el cliente.");
+                            });
+
+
+                    this.modal.hide();
+                },
+
+                editarCliente() {
+                    console.log("El estudiante seleccionado para actualizar: ", this.cliente);
+                    this.titulo = "Editando Estudiante - "+this.cliente.id;
+                    this.nuevo = Object.assign({}, this.cliente); //copiando el objeto, evitando el cambio directo en el form.
+                    this.editando = true;
+
+                    this.modal = new bootstrap.Modal(document.getElementById('modal-1'));
+                    this.modal.show();
+                },
             }
         });
 

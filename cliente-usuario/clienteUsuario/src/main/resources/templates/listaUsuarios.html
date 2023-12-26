@@ -31,7 +31,16 @@
 
 <body>
 <div th:replace="plantilla.html::menu"></div>
-    <div class="table-responsive table table-hover table-bordered results" style="padding-top: 67px;" id="app">
+<div id="app">
+    <br>
+    <br>
+    <select v-model="vistaActual" class="form-select" aria-label="Seleccionar Grupo de Usuarios" style="width: 200px; max-width: 100%;">
+        <option value="clientes">Clientes</option>
+        <option value="admins">Admins</option>
+    </select>
+
+
+    <div class="table-responsive table table-hover table-bordered results" style="padding-top: 67px;" v-show="vistaActual === 'clientes'">
         <table class="table table-hover table-bordered">
             <thead class="bill-header cs">
                 <tr>
@@ -56,7 +65,7 @@
             </tbody>
         </table>
     </div>
-    <div class="table-responsive table table-hover table-bordered results" style="padding-top: 67px;">
+    <div class="table-responsive table table-hover table-bordered results" style="padding-top: 67px;" v-show="vistaActual === 'admins'">
         <table class="table table-hover table-bordered">
             <thead class="bill-header cs">
                 <tr>
@@ -68,19 +77,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="warning no-result">
-                    <td colspan="12"><i class="fa fa-warning"></i>&nbsp; No Result !!!</td>
-                </tr>
-                <tr>
-                    <td><span style="color: rgb(255, 255, 255);">01</span></td>
-                    <td><span style="color: rgb(255, 255, 255);">India</span></td>
-                    <td><span style="color: rgb(255, 255, 255);">Souvik Kundu</span></td>
-                    <td><span style="color: rgb(255, 255, 255);">Bootstrap Stuido</span></td>
-                    <td><span style="color: rgb(255, 255, 255);">2014</span></td>
-                </tr>
+            <!--                <tr class="warning no-result">-->
+            <!--                    <td colspan="12"><i class="fa fa-warning"></i>&nbsp; No Result !!!</td>-->
+            <!--                </tr>-->
+            <tr v-for="admin in admins" :key="admin.id">
+                <td style="color: rgb(255, 255, 255);">{{ admin.id }}</td>
+                <td style="color: rgb(255, 255, 255);">{{ admin.nombre }}</td>
+                <td style="color: rgb(255, 255, 255);">{{ admin.apellido }}</td>
+                <td style="color: rgb(255, 255, 255);">{{ admin.email }}</td>
+                <td style="color: rgb(255, 255, 255);">{{ admin.username }}</td>
+            </tr>
             </tbody>
         </table>
     </div>
+</div>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -108,7 +118,7 @@
          */
         const NOMBRE_KEY = "API_URL";
         if(localStorage.getItem(NOMBRE_KEY) == null){
-            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081/user")
+            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081")
         }
         const URL_API = localStorage.getItem(NOMBRE_KEY);
 
@@ -118,7 +128,7 @@
 
             data(){
                 return {
-
+                    vistaActual: 'clientes',
                     titulo: "Creación de Estudiante",
                     editando: false,
                     nuevo: {
@@ -133,6 +143,7 @@
 
                     },
                     clientes: [],
+                    admins: [],
                     modal: ""
 
                 }
@@ -150,14 +161,35 @@
 
             methods: {
 
+                // listaClientes(){
+                //     console.log("Cargando lista de Estudiante");
+                //     axios.get(URL_API).then(response => {
+                //         //
+                //         console.log("Recuperando información del servidor");
+                //         //
+                //         this.clientes = response.data;
+                //     }).catch(error => { console.log(error); });
+                // },
+
                 listaClientes(){
                     console.log("Cargando lista de Estudiante");
-                    axios.get(URL_API).then(response => {
-                        //
+                    const url = `${URL_API}/user`;
+                    axios.get(url).then(response => {
                         console.log("Recuperando información del servidor");
-                        //
-                        this.clientes = response.data;
-                    }).catch(error => { console.log(error); });
+                        //this.clientes = response.data;
+                        const listaUsuarios = response.data;
+
+                        // Filtrar los usuarios en dos listas basadas en el rol
+                        this.admins = listaUsuarios.filter(user =>
+                            user.rols.some(rol => rol.role === 'ROLE_ADMIN'));
+                        this.clientes = listaUsuarios.filter(user =>
+                            user.rols.some(rol => rol.role === 'ROLE_USER'));
+
+                        console.log("KLKKKKKKKKKKKKKKKKKK");
+                        console.log(this.admins);
+                    }).catch(error => {
+                        console.log(error);
+                    });
                 },
 
 

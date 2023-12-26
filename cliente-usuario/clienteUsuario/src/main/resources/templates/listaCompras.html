@@ -19,36 +19,43 @@
     <link rel="stylesheet" href="/assets/css/Ludens-Users---3-Profile.css">
     <link rel="stylesheet" href="/assets/css/Table-With-Search-search-table.css">
     <link rel="stylesheet" href="/assets/css/Table-With-Search.css">
+
+    <!-- Required scripts -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
     <section class="mt-4"></section>
     <div th:replace="plantilla.html::menu"></div>
 
-    <div class="col-md-12 search-table-col"><span class="counter pull-right"></span>
+    <div class="col-md-12 search-table-col" id="app"><span class="counter pull-right" ></span>
         <div class="table-responsive table table-hover table-bordered results">
             <table class="table table-hover table-bordered">
                 <thead class="bill-header cs">
                     <tr>
                         <th id="trs-hd-1" class="col-lg-1"><span style="color: rgb(255, 255, 255);">Id</span></th>
                         <th id="trs-hd-2" class="col-lg-2"><span style="color: rgb(255, 255, 255);">Servicios</span></th>
-                        <th id="trs-hd-3" class="col-lg-3"><span style="color: rgb(255, 255, 255);">Fecha Compra</span></th>
-                        <th id="trs-hd-4" class="col-lg-2"><span style="color: rgb(255, 255, 255);">Fecha Servicio</span></th>
+                        <th id="trs-hd-3" class="col-lg-1"><span style="color: rgb(255, 255, 255);">Fecha Compra</span></th>
+                        <th id="trs-hd-4" class="col-lg-1"><span style="color: rgb(255, 255, 255);">Fecha Servicio</span></th>
                         <th id="trs-hd-5" class="col-lg-2"><span style="color: rgb(255, 255, 255);">Encargado</span></th>
                         <th id="trs-hd-6" class="col-lg-2"><span style="color: rgb(255, 255, 255);">Cliente</span></th>
+                        <th id="trs-hd-7" class="col-lg-2"><span style="color: rgb(255, 255, 255);">Monto</span></th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="warning no-result">
                         <td colspan="12"><i class="fa fa-warning"></i>&nbsp; No Result !!!</td>
                     </tr>
-                    <tr>
-                        <td><span style="color: rgb(255, 255, 255);">01</span></td>
-                        <td><span style="color: rgb(255, 255, 255);">India</span></td>
-                        <td><span style="color: rgb(255, 255, 255);">Souvik Kundu</span></td>
-                        <td><span style="color: rgb(255, 255, 255);">Bootstrap Stuido</span></td>
-                        <td><span style="color: rgb(255, 255, 255);">2014</span></td>
-                        <td><span style="color: rgb(255, 255, 255);">fgrt</span></td>
+                    <tr v-for="compra in compras">
+                        <td><span style="color: rgb(255, 255, 255);">{{compra.id}}</span></td>
+                        <td><span style="color: rgb(255, 255, 255);">{{ servicios(compra.tipoEvento, compra.incluirVideo) }}</span></td>
+                        <td><span style="color: rgb(255, 255, 255);">{{compra.fechaPago}}</span></td>
+                        <td><span style="color: rgb(255, 255, 255);">{{compra.fechaEvento}}</span></td>
+                        <td><span style="color: rgb(255, 255, 255);">{{ nombresDeUsuarios[compra.idEncargado] || 'Cargando...' }}</span></td>
+                        <td><span style="color: rgb(255, 255, 255);">{{ nombresDeClientes[compra.idCliente] || 'Cargando...' }}</span></td>
+                        <td><span style="color: rgb(255, 255, 255);">{{compra.total}}</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -72,6 +79,117 @@
     <script src="/assets/js/bold-and-dark.js"></script>
     <script src="/assets/js/Bootstrap-4---Payment-Form-script.js"></script>
     <script src="/assets/js/Table-With-Search-search-table.js"></script>
+
+    <!-- Libreria Vuejs -->
+    <script>
+
+        /**
+         * En caso de utilizar con API diferentes al dominio indicar la URL.
+         */
+        const NOMBRE_KEY = "API_URL";
+        if(localStorage.getItem(NOMBRE_KEY) == null){
+            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081")
+        }
+        const URL_API = localStorage.getItem(NOMBRE_KEY);
+
+        const { createApp } = Vue;
+
+        const app = createApp({
+
+            data(){
+                return {
+                   // vistaActual: 'clientes',
+                    titulo: "Creación de Estudiante",
+                    editando: false,
+                    compras: [],
+                    modal: "",
+                    nombresDeUsuarios: {},
+                    nombresDeClientes: {}
+                }
+            },
+
+            mounted() {
+                console.log("Iniciando la aplicación en mounted: "+this.titulo);
+                this.$nextTick(function () {  //garantizo que todos los elementos están renderizados.
+                    console.log("Cargando todo el render del proyecto");
+                    this.listaCompras();
+
+                    this.modal = new bootstrap.Modal(document.getElementById('modal-1'));
+                });
+            },
+
+
+            methods: {
+
+
+                // listaCompras(){
+                //     console.log("Cargando lista de compras");
+                //     const url = `${URL_API}/evento`;
+                //     axios.get(url).then(response => {
+                //         console.log("Recuperando información del servidor");
+                //         this.compras = response.data;
+                //
+                //     }).catch(error => {
+                //         console.log(error);
+                //     });
+                // },
+
+                listaCompras() {
+                    const url = `${URL_API}/evento`;
+                    axios.get(url).then(response => {
+                        this.compras = response.data;
+                        this.compras.forEach(compra => {
+                            this.obtenerNombreUsuario(compra.idEncargado);
+                        });
+                        this.compras.forEach(compra => {
+                            this.obtenerNombreCliente(compra.idCliente);
+                        });
+                    }).catch(error => {
+                        console.error("Error al cargar la lista de compras: ", error);
+                    });
+                },
+
+
+                servicios(tipoEvento, video) {
+                    if (video == true) {
+                        return `${tipoEvento} + Video Evento`;
+                    }
+                    return tipoEvento;
+                },
+
+                obtenerNombreUsuario(idUser) {
+                    if (!this.nombresDeUsuarios[idUser]) { // Verificar si ya se cargó el nombre
+                        const url = `${URL_API}/user/${idUser}`;
+                        axios.get(url).then(response => {
+                            this.nombresDeUsuarios[idUser] = `${response.data.nombre} ${response.data.apellido}`;
+                        }).catch(error => {
+                            console.error("Error al obtener el nombre del usuario: ", error);
+                        });
+                    }
+                },
+
+                obtenerNombreCliente(idUser) {
+                    if (!this.nombresDeClientes[idUser]) { // Verificar si ya se cargó el nombre
+                        const url = `${URL_API}/user/${idUser}`;
+                        axios.get(url).then(response => {
+                            this.nombresDeClientes[idUser] = `${response.data.nombre} ${response.data.apellido}`;
+                        }).catch(error => {
+                            console.error("Error al obtener el nombre del usuario: ", error);
+                        });
+                    }
+                },
+
+
+            }
+        });
+
+        /**
+         *
+         */
+        app.mount('#app');
+
+
+    </script>
 </body>
 
 </html>

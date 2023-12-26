@@ -31,7 +31,7 @@
             <div class="col-sm-12 col-lg-10 col-xl-9 col-xxl-7 bg-white shadow-lg" style="border-radius: 5px;">
                 <div class="p-5">
                     <div class="text-center">
-                        <h4 class="text-dark mb-4"><a href="/login">Crea tu cuenta</a></h4>
+                        <h4 class="text-dark mb-4"><a href="/login">{{titulo}}</a></h4>
                     </div>
 <!--                    <form class="user"  @submit.prevent="crearActualizarEstudiante">-->
 <!--                        <div class="mb-3"><input class="form-control form-control-user" type="text" placeholder="Usuario" required=""></div>-->
@@ -182,7 +182,7 @@
     <script>
         const NOMBRE_KEY = "API_URL";
         if(localStorage.getItem(NOMBRE_KEY) == null){
-            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081/user");
+            localStorage.setItem(NOMBRE_KEY, "http://localhost:8081");
         }
         const URL_API = localStorage.getItem(NOMBRE_KEY);
 
@@ -191,7 +191,7 @@
         const app = createApp({
             data() {
                 return {
-                    titulo: "Creación de Cliente",
+                    titulo: "Crea tu cuenta",
                     editando: false,
                     nuevo: {
                         nombre: '',
@@ -217,7 +217,7 @@
             methods: {
                 nuevoCliente() {
                     console.log("Nuevo Cliente");
-                    this.titulo = "Nuevo Cliente";
+                    this.titulo = "Crear Cuenta";
                     this.editando = false;
                     this.limpiar();
                 },
@@ -227,20 +227,33 @@
 
                     if(!this.editando) {
                         // Creando
+                        console.log("NO EDITANDO")
                         axios.post(URL_API, this.nuevo).then(response => {
                             this.limpiar();
                             // Aquí asumo que tienes una función para actualizar la lista de clientes
                             //this.listaClientes();
                         }).catch(error => console.log(error));
-                    } /*else {
+                    } else {
                         // Editando
+                        console.log("SI EDITANDO");
                         axios.put(URL_API, this.nuevo).then(response => {
-                            this.limpiar();
+                            //this.limpiar();
                            // this.listaClientes();
+                            window.location.href = '/mi-cuenta';
                         }).catch(error => console.log(error));
-                    }*/
+                    }
                    // this.modal.hide();
                 },
+
+                editarCliente(cliente) {
+                    console.log("El estudiante seleccionado para actualizar: ", cliente);
+                    this.titulo = "Editando Estudiante - "+cliente.id;
+                    this.nuevo = Object.assign({}, cliente); //copiando el objeto, evitando el cambio directo en el form.
+                    this.editando = true;
+
+                    //this.modal.show();
+                },
+
 
                 limpiar() {
                     this.nuevo.nombre = '';
