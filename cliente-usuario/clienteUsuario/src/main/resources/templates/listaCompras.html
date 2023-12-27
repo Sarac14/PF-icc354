@@ -30,6 +30,16 @@
     <div th:replace="plantilla.html::menu"></div>
 
     <div class="col-md-12 search-table-col" id="app"><span class="counter pull-right" ></span>
+
+        <select v-model="vistaSeleccionada" class="form-select" style="width: 200px; max-width: 100%;">
+            <option value="todo">Todo</option>
+            <option value="sinAsignar">Sin Asignar</option>
+            <option value="proximos">Próximos</option>
+            <option value="pasados">Pasados</option>
+            <option value="actuales">Actuales</option>
+        </select>
+        <br>
+        <br>
         <div class="table-responsive table table-hover table-bordered results">
             <table class="table table-hover table-bordered">
                 <thead class="bill-header cs">
@@ -48,7 +58,7 @@
                     <tr class="warning no-result">
                         <td colspan="12"><i class="fa fa-warning"></i>&nbsp; No Result !!!</td>
                     </tr>
-                    <tr v-for="compra in compras">
+                    <tr v-for="compra in comprasFiltradas">
                         <td><span style="color: rgb(255, 255, 255);">{{compra.id}}</span></td>
                         <td><span style="color: rgb(255, 255, 255);">{{ servicios(compra.tipoEvento, compra.incluirVideo) }}</span></td>
                         <td><span style="color: rgb(255, 255, 255);">{{compra.fechaPago}}</span></td>
@@ -104,7 +114,29 @@
                     compras: [],
                     modal: "",
                     nombresDeUsuarios: {},
-                    nombresDeClientes: {}
+                    nombresDeClientes: {},
+                    vistaSeleccionada: 'actuales',
+
+                }
+            },
+            computed: {
+                comprasFiltradas() {
+                    const hoy = new Date().toISOString().split('T')[0];
+                    console.log(hoy);
+                    switch (this.vistaSeleccionada) {
+                        case 'todo':
+                            return this.compras;
+                        case 'sinAsignar':
+                            return this.compras.filter(compra => compra.idEncargado === 0);
+                        case 'proximos':
+                            return this.compras.filter(compra => compra.fechaEvento > hoy);
+                        case 'pasados':
+                            return this.compras.filter(compra => compra.fechaEvento < hoy);
+                        case 'actuales':
+                            return this.compras.filter(compra => compra.fechaEvento === hoy);
+                        default:
+                            return this.compras;
+                    }
                 }
             },
 
@@ -121,18 +153,6 @@
 
             methods: {
 
-
-                // listaCompras(){
-                //     console.log("Cargando lista de compras");
-                //     const url = `${URL_API}/evento`;
-                //     axios.get(url).then(response => {
-                //         console.log("Recuperando información del servidor");
-                //         this.compras = response.data;
-                //
-                //     }).catch(error => {
-                //         console.log(error);
-                //     });
-                // },
 
                 listaCompras() {
                     const url = `${URL_API}/evento`;

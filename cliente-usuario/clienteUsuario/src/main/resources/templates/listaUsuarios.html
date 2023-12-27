@@ -185,8 +185,6 @@
                         this.clientes = listaUsuarios.filter(user =>
                             user.rols.some(rol => rol.role === 'ROLE_USER'));
 
-                        console.log("KLKKKKKKKKKKKKKKKKKK");
-                        console.log(this.admins);
                     }).catch(error => {
                         console.log(error);
                     });

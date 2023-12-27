@@ -118,16 +118,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 1</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 2</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
+                            <tr v-for="evento in eventosProximos">
+                                    <td><span style="color: rgb(255, 255, 255);">{{evento.tipoEvento}}</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">{{evento.fechaEvento}}</span></td>
+                                    <td><span style="color: rgb(255, 255, 255);">{{nombresDeUsuarios[evento.idEncargado] || 'Cargando...' }}</span></td>
                                 </tr>
-                                <tr>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 3</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 4</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -147,16 +143,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 1</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 2</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 3</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Cell 4</span></td>
-                                    <td><span style="color: rgb(255, 255, 255);">Text</span></td>
-                                </tr>
+                            <tr v-for="evento in eventosPasados">
+                                <td><span style="color: rgb(255, 255, 255);">{{servicios(evento.tipoEvento,evento.incluirVideo)}}</span></td>
+                                <td><span style="color: rgb(255, 255, 255);">{{evento.fechaEvento}}</span></td>
+                                <td><span style="color: rgb(255, 255, 255);">{{ nombresDeUsuarios[evento.idEncargado] || 'Cargando...' }}</span></td>
+                            </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -300,6 +292,9 @@
                     // clientes: [],
                     modal: "",
                     cliente: "",
+                    eventosPasados: [],
+                    eventosProximos: [],
+                    nombresDeUsuarios: {},
 
 
                 }
@@ -311,6 +306,7 @@
                     console.log("Cargando todo el render del proyecto");
                   //  this.listaClientes();
                     this.obtenerDatosCliente();
+                    this.listaEventos();
                     // this.modal = new bootstrap.Modal(document.getElementById('modal-1'), {
                     //     keyboard: true
                     // });
@@ -320,6 +316,26 @@
 
 
             methods: {
+                async obtenerNombreUsuario(idUser) {
+                    if (idUser === 0) {
+                        this.nombresDeUsuarios[idUser] = "Sin asignar";
+                        return "Sin asignar";
+                    }
+                    if (!this.nombresDeUsuarios[idUser]) {
+                        try {
+                            const url = `${URL_API}/user/${idUser}`;
+                            const response = await axios.get(url);
+                            this.nombresDeUsuarios[idUser] = `${response.data.nombre} ${response.data.apellido}`;
+                            return `${response.data.nombre} ${response.data.apellido}`; // Devuelve el nombre completo
+                        } catch (error) {
+                            console.error("Error al obtener el nombre del usuario: ", error);
+                            this.nombresDeUsuarios[idUser] = "Error al cargar"; // O maneja el error como prefieras
+                            return "Error al cargar";
+                        }
+                    } else {
+                        return this.nombresDeUsuarios[idUser]; // Devuelve el nombre si ya está cargado
+                    }
+                },
 
                 obtenerDatosCliente() {
                     // Obtener el token del localStorage
@@ -391,6 +407,53 @@
                     this.modal = new bootstrap.Modal(document.getElementById('modal-1'));
                     this.modal.show();
                 },
+
+                listaEventos() {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        console.log("No hay token en el almacenamiento local.");
+                        return;
+                    }
+
+                    const decoded = jwt_decode(token);
+                    const userId = decoded.idUser;
+
+                    console.log("Cargando lista de Eventos por usuario");
+                    const url = `${URL_API}/evento/misEventos/${userId}`;
+                    axios.get(url).then(response => {
+                        console.log("Recuperando información del evento del usuario");
+
+                        const eventosDelUsuario = response.data;
+                        const hoy = new Date().toISOString().split('T')[0];
+
+                        this.eventosPasados = eventosDelUsuario.filter(evento => {
+                            return evento.fechaEvento < hoy;
+                        });
+
+                        this.eventosPasados.forEach(evento => {
+                            this.obtenerNombreUsuario(evento.idEncargado);
+                        });
+
+                        this.eventosProximos = eventosDelUsuario.filter(evento => {
+                            return evento.fechaEvento >= hoy;
+                        });
+
+                        this.eventosProximos.forEach(evento => {
+                            this.obtenerNombreUsuario(evento.idEncargado);
+                        });
+
+                    }).catch(error => {
+                        console.error("Error al cargar la lista de eventos: ", error);
+                    });
+                },
+
+                servicios(tipoEvento, video) {
+                    if (video == true) {
+                        return `${tipoEvento} + Video Evento`;
+                    }
+                    return tipoEvento;
+                },
+
             }
         });
 
