@@ -336,17 +336,32 @@
                         return this.nombresDeUsuarios[idUser]; // Devuelve el nombre si ya está cargado
                     }
                 },
+                obtenerIdUsuarioActual() {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        const decoded = jwt_decode(token);
+                        return decoded.idUser;
+                    }
+                    return null;
+                },
+
+                obtenerRolUsuarioActual() {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        try {
+                            const decoded = jwt_decode(token);
+                            return decoded.roles;
+                        } catch (error) {
+                            console.error("Error decodificando el token:", error);
+                        }
+                    }
+                    return [];
+                },
 
                 obtenerDatosCliente() {
                     // Obtener el token del localStorage
-                    const token = localStorage.getItem('token');
-                    if (!token) {
-                        console.log("No hay token en el almacenamiento local.");
-                        return;
-                    }
 
-                    const decoded = jwt_decode(token);
-                    const userId = decoded.idUser;
+                    const userId = this.obtenerIdUsuarioActual();
 
                     // Hacer la solicitud GET para obtener los datos del cliente
                     const url = `${URL_API}/user/${userId}`;
@@ -361,14 +376,8 @@
                 eliminarUsuario() {
                     const confirmed = confirm("¿Desea elminiar esta cuenta?");
                     if(confirmed) {
-                        const token = localStorage.getItem('token');
-                        if (!token) {
-                            console.log("No hay token en el almacenamiento local.");
-                            return;
-                        }
 
-                        const decoded = jwt_decode(token);
-                        const userId = decoded.idUser;
+                        const userId = this.obtenerIdUsuarioActual();
 
                         // Hacer la solicitud GET para obtener los datos del cliente
                         const url = `${URL_API}/user/${userId}`;
@@ -409,17 +418,13 @@
                 },
 
                 listaEventos() {
-                    const token = localStorage.getItem('token');
-                    if (!token) {
-                        console.log("No hay token en el almacenamiento local.");
-                        return;
+                    const userId = this.obtenerIdUsuarioActual();
+                    const rolesUsuario = this.obtenerRolUsuarioActual();
+
+                    let url = `${URL_API}/evento/misEventos/${userId}`;
+                    if (rolesUsuario.includes("ROLE_ADMIN")) {
+                        url = `${URL_API}/evento/eventosAsigandos/${userId}`;
                     }
-
-                    const decoded = jwt_decode(token);
-                    const userId = decoded.idUser;
-
-                    console.log("Cargando lista de Eventos por usuario");
-                    const url = `${URL_API}/evento/misEventos/${userId}`;
                     axios.get(url).then(response => {
                         console.log("Recuperando información del evento del usuario");
 

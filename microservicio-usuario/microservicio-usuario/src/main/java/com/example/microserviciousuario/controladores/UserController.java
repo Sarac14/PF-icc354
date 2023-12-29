@@ -43,8 +43,11 @@ public class UserController {
     }
     @PostMapping()
     public ResponseEntity<Usuario> save(@RequestBody Usuario user) {
-        Rol rolSUser = rolRepository.findByRole("ROLE_USER");
-        user.setRols(Arrays.asList(rolSUser));
+        if(user.getRols() == null){
+            Rol rolSUser = rolRepository.findByRole("ROLE_USER");
+            user.setRols(Arrays.asList(rolSUser));
+        }
+
         Usuario userNew = userService.save(user);
         return ResponseEntity.ok(userNew);
     }
@@ -70,6 +73,7 @@ public class UserController {
         user.setEmail(updatedUser.getEmail());
         user.setPassword(updatedUser.getPassword());
         user.setUsername(updatedUser.getUsername());
+        user.setRols(updatedUser.getRols());
 
         Usuario updatedUserEntity = userService.save(user);  // Guarda los cambios en la base de datos
 

@@ -18,6 +18,9 @@ public class EventoServices {
     public List<Evento> getEventoByCliente(int idCliente) {
         return eventoRepository.findEventoByIdCliente(idCliente).orElse(null);
     }
+    public List<Evento> getEventoByEncargado(int idEncargado) {
+        return eventoRepository.findEventoByIdEncargado(idEncargado).orElse(null);
+    }
     public Evento save(Evento evento) {
         Evento newEvento = eventoRepository.save(evento);
         return newEvento;

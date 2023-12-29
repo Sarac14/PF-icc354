@@ -23,6 +23,7 @@
     <!-- Required scripts -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 </head>
 
 <body>
@@ -64,7 +65,13 @@
                         <td><span style="color: rgb(255, 255, 255);">{{ servicios(compra.tipoEvento, compra.incluirVideo) }}</span></td>
                         <td><span style="color: rgb(255, 255, 255);">{{compra.fechaPago}}</span></td>
                         <td><span style="color: rgb(255, 255, 255);">{{compra.fechaEvento}}</span></td>
-                        <td><span style="color: rgb(255, 255, 255);">{{ nombresDeUsuarios[compra.idEncargado] || 'Cargando...' }}</span></td>
+<!--                        <td><span style="color: rgb(255, 255, 255);">{{ nombresDeUsuarios[compra.idEncargado] || 'Cargando...' }}</span></td>-->
+                        <td>
+                            <span style="color: rgb(255, 255, 255);">
+                                {{ nombresDeUsuarios[compra.idEncargado] }}
+                            </span>
+                            <button v-if="compra.idEncargado === 0" @click="asignarEvento(compra.id)" class="btn btn-primary btn-sm">Asignarme</button>
+                        </td>
                         <td><span style="color: rgb(255, 255, 255);">{{ nombresDeClientes[compra.idCliente] || 'Cargando...' }}</span></td>
                         <td><span style="color: rgb(255, 255, 255);">{{compra.total}}</span></td>
                     </tr>
@@ -112,7 +119,7 @@
     <script src="/assets/js/Bootstrap-4---Payment-Form-script.js"></script>
     <script src="/assets/js/Table-With-Search-search-table.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 
     <!-- Libreria Vuejs -->
     <script>
@@ -372,8 +379,39 @@
                 },
 
 
+                obtenerIdUsuarioActual() {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        const decoded = jwt_decode(token);
+                        return decoded.idUser;
+                    }
+                    return null;
+                },
+                asignarEvento(eventoId) {
+                    const userId = this.obtenerIdUsuarioActual();
+                    if (!userId) {
+                        alert("Usuario no identificado");
+                        return;
+                    }
 
+                    // Encuentra el evento que se va a actualizar
+                    const eventoParaActualizar = this.compras.find(evento => evento.id === eventoId);
+                    if (!eventoParaActualizar) {
+                        alert("Evento no encontrado");
+                        return;
+                    }
 
+                    // Actualiza el idEncargado del evento
+                    const eventoActualizado = { ...eventoParaActualizar, idEncargado: userId };
+
+                    const url = `${URL_API}/evento/${eventoId}`;
+                    axios.put(url, eventoActualizado).then(response => {
+                        console.log('Encargado asignado con éxito');
+                        this.listaCompras();
+                    }).catch(error => {
+                        console.error("Error al asignar el evento: ", error);
+                    });
+                },
 
                 listaCompras() {
                     const url = `${URL_API}/evento`;

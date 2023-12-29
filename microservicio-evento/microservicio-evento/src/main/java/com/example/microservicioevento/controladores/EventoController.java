@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -38,6 +37,15 @@ public class EventoController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(evento);
     }
+
+    @GetMapping("/eventosAsigandos/{idEncargado}")
+    public ResponseEntity<List<Evento>> getByEncargado(@PathVariable("idEncargado") int idEncargado) {
+        List<Evento> evento = eventoServices.getEventoByEncargado(idEncargado);
+        if(evento == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(evento);
+    }
+
 
     @PostMapping()
     public ResponseEntity<Evento> save(@RequestBody Evento evento) {
