@@ -47,6 +47,15 @@ public class EventoController {
     }
 
 
+    @GetMapping("/eventosNoPagados/{idCliente}")
+    public ResponseEntity<List<Evento>> getEventosNoPagadosPorCliente(@PathVariable("idCliente") int idCliente) {
+        List<Evento> eventos = eventoServices.getEventosNoPagadosPorCliente(idCliente);
+        if(eventos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(eventos);
+    }
+
     @PostMapping()
     public ResponseEntity<Evento> save(@RequestBody Evento evento) {
         Evento newEvento = eventoServices.save(evento);

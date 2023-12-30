@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface EventoRepository extends JpaRepository<Evento, Integer> {
 //    Optional<Evento> findByIdCliente(int idCliente);
     Optional<List<Evento>> findEventoByIdCliente(int idCliente);
+
+    List<Evento> findByIdClienteAndPagado(int idCliente, boolean pagado);
     Optional<List<Evento>> findEventoByIdEncargado(int idEncargado);
 }

@@ -32,4 +32,8 @@ public class EventoServices {
     public Evento getEventoById(int id) {
         return eventoRepository.findById(id).orElse(null);
     }
+
+    public List<Evento> getEventosNoPagadosPorCliente(int idCliente) {
+        return eventoRepository.findByIdClienteAndPagado(idCliente,false);
+    }
 }
