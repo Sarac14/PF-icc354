@@ -16,9 +16,7 @@ public class MicroservicioUsuarioApplication {
 		ApplicationContext applicationContext = SpringApplication.run(MicroservicioUsuarioApplication.class, args);
 		UserServices usuarioService = (UserServices) applicationContext.getBean("userServices");
 		if(usuarioService.getUserByUsername("admin") == null){
-			System.out.println("klkkkkkkkkkkkkkkkkk");
 			usuarioService.initializeUsuario();
-			System.out.println("HHHHHHHHHHHHHHHHHHHHHH");
 		}else {
 			System.out.println("YA EL USUARIO ADMIN EXISTE");
 		}

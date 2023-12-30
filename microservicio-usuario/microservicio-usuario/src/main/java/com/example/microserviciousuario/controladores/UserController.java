@@ -96,12 +96,19 @@ public class UserController {
     }
 
 
+
     @PostMapping("/saveEvento/{userId}")
     public ResponseEntity<Evento> saveEvento(@PathVariable("userId") int userId, @RequestBody Evento evento) {
-        if(userService.getUserById(userId) == null)
+        if (userService.getUserById(userId) == null) {
             return ResponseEntity.notFound().build();
-        Evento eventoNew = userService.saveEvento(userId, evento);
-        return ResponseEntity.ok(evento);
+        }
+
+        List<String> correosEmpleados = userService.obtenerCorreosAdmins();
+        String[] correosArray = correosEmpleados.toArray(new String[0]);
+
+
+        Evento eventoNew = userService.saveEvento(userId, evento, correosArray);
+        return ResponseEntity.ok(eventoNew);
     }
 
     @PostMapping("/saveEvento")

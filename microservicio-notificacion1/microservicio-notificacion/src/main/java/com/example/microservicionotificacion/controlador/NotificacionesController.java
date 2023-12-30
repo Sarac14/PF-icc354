@@ -20,8 +20,18 @@ public class NotificacionesController {
             @RequestParam String email,
             @RequestParam String nombreUsuario,
             @RequestParam String contrasena) {
-        servicioCorreo.enviarCorreoRegistro(email, nombreUsuario, contrasena);
+        servicioCorreo.enviarCorreoRegistro1(email, nombreUsuario, contrasena);
         System.out.println("Correo de bienvenida enviado a " + email);
         return ResponseEntity.ok("Correo de bienvenida enviado a " + email);
     }
+
+    @PostMapping("/enviar-correo-asignacion")
+    public ResponseEntity<?> enviarCorreoAsignacion(
+            @RequestParam String[] destinatarios) {
+        servicioCorreo.enviarCorreoAsignacion(destinatarios);
+        System.out.println("Correo de bienvenida enviado a " + destinatarios[0]);
+        return ResponseEntity.ok("Correo de bienvenida enviado a " + destinatarios[0]);
+    }
+
+
 }

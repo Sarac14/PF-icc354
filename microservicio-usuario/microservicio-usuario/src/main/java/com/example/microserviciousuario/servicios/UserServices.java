@@ -1,17 +1,20 @@
 package com.example.microserviciousuario.servicios;
 
 import com.example.microserviciousuario.Client.EventoClient;
+import com.example.microserviciousuario.Client.NotificacionClient;
 import com.example.microserviciousuario.entidades.Rol;
 import com.example.microserviciousuario.entidades.Usuario;
 import com.example.microserviciousuario.model.Evento;
 import com.example.microserviciousuario.repositorio.RolRepository;
 import com.example.microserviciousuario.repositorio.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServices {
@@ -22,6 +25,9 @@ public class UserServices {
 
     @Autowired
     EventoClient eventoClient;
+
+    @Autowired
+    NotificacionClient notificacionClient;
 
     public List<Usuario> getAll() {
         return userRepository.findAll();
@@ -89,23 +95,46 @@ public class UserServices {
         userRepository.delete(getUserById(id));
     }
 
-    private void enviarCorreoBienvenida(String email, String nombreUsuario, String contrasena) {
-        System.out.println("ENTRE A EMVIARCORREOBIENVENIDA!!!!!!!!!!!!!!!!!!1");
-        RestTemplate restTemplate = new RestTemplate();
-        String urlNotificaciones = "http://localhost:8003/api/notificaciones/enviar-correo";
-        String parametros = "?email=" + email + "&nombreUsuario=" + nombreUsuario + "&contrasena=" + contrasena;
-        restTemplate.postForObject(urlNotificaciones + parametros, null, String.class);
+
+
+    public void enviarCorreoBienvenida(String email, String nombreUsuario, String contrasena) {
+        String response = notificacionClient.enviarCorreo(email, nombreUsuario, contrasena);
+        System.out.println(response);
     }
 
-    public Evento saveEvento(int userId, Evento evento){
+
+    public void enviarCorreoAsignacion(String[] destinatarios) {
+        System.out.println("ENTRE A enviarCorreoAsignacion!!!!!!!!!!!!!!!!!!1");
+        String response = notificacionClient.enviarCorreoAsignacion(destinatarios);
+        System.out.println(response);
+    }
+
+    public Evento saveEvento(int userId, Evento evento, String[] correoEmpleados){
         evento.setIdCliente(userId);
         Evento newEvento = eventoClient.save(evento);
+        enviarCorreoAsignacion(correoEmpleados);
         return newEvento;
     }
+
 
     public Evento saveEvento1( Evento evento){
 
         Evento newEvento = eventoClient.save(evento);
         return newEvento;
     }
+
+    public List<String> obtenerCorreosAdmins() {
+        List<String> emails = new ArrayList<>();
+        List<Usuario> usuarios = getAll();
+        for (Usuario user: usuarios) {
+            for (Rol rol : user.getRols()) {
+                if (rol.getRole().equals("ROLE_ADMIN")) {
+                    emails.add(user.getEmail());
+                }
+            }
+        }
+
+        return emails;
+    }
+
 }

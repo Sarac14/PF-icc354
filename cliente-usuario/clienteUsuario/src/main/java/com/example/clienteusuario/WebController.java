@@ -47,6 +47,11 @@ public class WebController {
         return "crearCuenta";
     }
 
+    @GetMapping("/info")
+    public String info(Model model) {
+        return "info";
+    }
+
     @GetMapping("/realizarPago")
     public String RealizarPago(Model model) {
         return "payment";
