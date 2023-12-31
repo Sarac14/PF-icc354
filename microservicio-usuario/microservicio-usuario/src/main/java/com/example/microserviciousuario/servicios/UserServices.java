@@ -2,15 +2,19 @@ package com.example.microserviciousuario.servicios;
 
 import com.example.microserviciousuario.Client.EventoClient;
 import com.example.microserviciousuario.Client.NotificacionClient;
+import com.example.microserviciousuario.Util.GeneradorReportes;
 import com.example.microserviciousuario.entidades.Rol;
 import com.example.microserviciousuario.entidades.Usuario;
 import com.example.microserviciousuario.model.Evento;
 import com.example.microserviciousuario.repositorio.RolRepository;
 import com.example.microserviciousuario.repositorio.UserRepository;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +32,9 @@ public class UserServices {
 
     @Autowired
     NotificacionClient notificacionClient;
+
+    @Autowired
+    GeneradorReportes reporteService;
 
     public List<Usuario> getAll() {
         return userRepository.findAll();
@@ -109,10 +116,19 @@ public class UserServices {
         System.out.println(response);
     }
 
-    public Evento saveEvento(int userId, Evento evento, String[] correoEmpleados){
+    public void enviarCorreoResumen(String destinatario, byte[] pdf) {
+        System.out.println("ENTRE A enviarCorreoResumen!!!!!!!!!!!!!!!!!!1");
+        String response = notificacionClient.enviarCorreoResumen(destinatario, pdf);
+        System.out.println(response);
+    }
+
+    public Evento saveEvento(int userId, Evento evento, String[] correoEmpleados) throws JRException, IOException {
         evento.setIdCliente(userId);
+        byte[] reportePdf = reporteService.exportToPdf(evento, getUserById(userId).getNombre() + ' ' + getUserById(userId).getApellido());
+
         Evento newEvento = eventoClient.save(evento);
         enviarCorreoAsignacion(correoEmpleados);
+        enviarCorreoResumen(getUserById(userId).getEmail(), reportePdf);
         return newEvento;
     }
 

@@ -3,6 +3,7 @@ package com.example.microservicionotificacion.servicios;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,19 +14,6 @@ public class ServicioCorreo {
 
     @Autowired
     private JavaMailSender mailSender;
-
-    public void enviarCorreoRegistro(String destinatario, String nombreUsuario, String contrasena) {
-
-        SimpleMailMessage mensaje = new SimpleMailMessage();
-        mensaje.setFrom("noreply@sarablog.me");
-        mensaje.setTo(destinatario);
-        mensaje.setSubject("Información de Acceso");
-        mensaje.setText("Hola,\n\nTu cuenta ha sido creada con éxito. Aquí están tus credenciales y el enlace para acceder al sistema:\n\n" +
-                "Usuario: " + nombreUsuario + "\n" +
-                "Contraseña: " + contrasena + "\n\n" +
-                "Saludos,\nS & H MULTIMEDIA");
-        mailSender.send(mensaje);
-    }
 
     public void enviarCorreoAsignacion(String[] destinatarios) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -70,6 +58,26 @@ public class ServicioCorreo {
         mailSender.send(mimeMessage);
     }
 
+    public void enviarCorreoResumen(String destinatario, byte[] reportePdf) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
 
+        // Configura MimeMessageHelper para modo multiparte
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
+
+        try {
+            helper.setFrom("noreply@sarablog.me");
+            helper.setTo(destinatario);
+            helper.setSubject("Resumen de Compra");
+            helper.setText("Gracias por preferirnos! Aquí está su reporte de compra.");
+
+            // Adjuntar PDF
+            helper.addAttachment("ReporteCompra.pdf", new ByteArrayResource(reportePdf));
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        mailSender.send(mimeMessage);
+    }
 
 }

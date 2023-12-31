@@ -1,12 +1,10 @@
 package com.example.microservicionotificacion.controlador;
 
 import com.example.microservicionotificacion.servicios.ServicioCorreo;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/notificaciones")
@@ -31,6 +29,14 @@ public class NotificacionesController {
         servicioCorreo.enviarCorreoAsignacion(destinatarios);
         System.out.println("Correo de bienvenida enviado a " + destinatarios[0]);
         return ResponseEntity.ok("Correo de bienvenida enviado a " + destinatarios[0]);
+    }
+
+    @PostMapping("/enviar-correo-resumen")
+    public ResponseEntity<?> enviarCorreoResumen(
+            @RequestParam String destinatario, @RequestBody byte[] reportePdf) throws MessagingException {
+        servicioCorreo.enviarCorreoResumen(destinatario, reportePdf);
+        System.out.println("Correo de bienvenida enviado a " + destinatario);
+        return ResponseEntity.ok("Correo de bienvenida enviado a " + destinatario);
     }
 
 

@@ -6,11 +6,14 @@ import com.example.microserviciousuario.model.Evento;
 import com.example.microserviciousuario.repositorio.RolRepository;
 import com.example.microserviciousuario.servicios.JwtTokenProvider;
 import com.example.microserviciousuario.servicios.UserServices;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,7 +101,7 @@ public class UserController {
 
 
     @PostMapping("/saveEvento/{userId}")
-    public ResponseEntity<Evento> saveEvento(@PathVariable("userId") int userId, @RequestBody Evento evento) {
+    public ResponseEntity<Evento> saveEvento(@PathVariable("userId") int userId, @RequestBody Evento evento) throws JRException, IOException {
         if (userService.getUserById(userId) == null) {
             return ResponseEntity.notFound().build();
         }

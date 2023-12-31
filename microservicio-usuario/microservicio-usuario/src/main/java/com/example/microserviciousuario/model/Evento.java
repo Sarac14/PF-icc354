@@ -12,4 +12,5 @@ public class Evento {
     private int total;
     private String tipoEvento;
     private boolean incluirVideo;
+    private boolean pagado;
 }

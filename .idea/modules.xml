@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/microservicio-evento.main.iml" filepath="$PROJECT_DIR$/.idea/modules/microservicio-evento.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/microservicio-notificacion.main.iml" filepath="$PROJECT_DIR$/.idea/modules/microservicio-notificacion.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/microservicio-usuario.main.iml" filepath="$PROJECT_DIR$/.idea/modules/microservicio-usuario.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/proyecto-final.iml" filepath="$PROJECT_DIR$/.idea/proyecto-final.iml" />
     </modules>
