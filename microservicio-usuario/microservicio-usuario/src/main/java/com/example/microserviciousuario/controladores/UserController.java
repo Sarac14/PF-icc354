@@ -44,6 +44,12 @@ public class UserController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(user);
     }
+
+    @GetMapping("/nombreCompleto/{id}")
+    public String nombreCompleto(@PathVariable("id") int id) {
+        Usuario user = userService.getUserById(id);
+        return user.nombreCompleto();
+    }
     @PostMapping()
     public ResponseEntity<Usuario> save(@RequestBody Usuario user) {
         if(user.getRols() == null){
@@ -113,14 +119,18 @@ public class UserController {
         Evento eventoNew = userService.saveEvento(userId, evento, correosArray);
         return ResponseEntity.ok(eventoNew);
     }
+    @PostMapping("/marcarComoPagado/{idEvento}")
+    public ResponseEntity<?> marcarComoPagado(@PathVariable int idEvento) {
+        try {
+            System.out.println("!!!!!!!!!!!!!!!!!!!MARCARCOMOPADAGO DESDE /USER");
+            List<String> correosEmpleados = userService.obtenerCorreosAdmins();
+            String[] correosArray = correosEmpleados.toArray(new String[0]);
 
-    @PostMapping("/saveEvento")
-    public ResponseEntity<Evento> saveEvento1(@RequestBody Evento evento) {
-//        if(userService.getUserById(userId) == null)
-//            return ResponseEntity.notFound().build();
-        Evento eventoNew = userService.saveEvento1(evento);
-        return ResponseEntity.ok(evento);
+            userService.marcarEventoComoPagado(idEvento,correosArray);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al marcar el evento como pagado");
+        }
     }
-
 
 }

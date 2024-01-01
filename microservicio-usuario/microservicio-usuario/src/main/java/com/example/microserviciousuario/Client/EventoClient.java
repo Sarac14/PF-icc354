@@ -16,4 +16,11 @@ public interface EventoClient {
     Evento save(@RequestBody Evento evento);
     @GetMapping("/misEventos/{idCliente}")
     List<Evento> getEventos(@PathVariable("idCliente") int idCliente);
+
+    @PostMapping("/marcarComoPagado/{idEvento}")
+    String marcarComoPagado(@PathVariable("idEvento") int idEvento);
+    //    ResponseEntity<Void> marcarComoPagado(@PathVariable("idEvento") int idEvento);
+
+    @GetMapping("/{id}")
+    Evento getById(@PathVariable("id") int id);
 }

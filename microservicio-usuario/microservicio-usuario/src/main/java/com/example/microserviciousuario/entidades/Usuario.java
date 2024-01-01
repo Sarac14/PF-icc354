@@ -74,4 +74,9 @@ public class Usuario implements Serializable {
     public void setRols(List<Rol> rols) {
         this.rols = rols;
     }
+
+
+    public String nombreCompleto(){
+        return getNombre() + ' ' + getApellido();
+    }
 }

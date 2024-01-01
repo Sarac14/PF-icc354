@@ -132,11 +132,18 @@ public class UserServices {
         return newEvento;
     }
 
+    public void marcarEventoComoPagado(int idEvento, String[] correoEmpleados) throws JRException, IOException {
+        Evento evento = eventoClient.getById(idEvento);
+        String nombreCliente = getUserById(evento.getIdCliente()).getNombre() + ' ' + getUserById(evento.getIdCliente()).getApellido();
+        System.out.println("!!!!!!!!!!!!!!!NOMBRE DEL CLIENTE CON ID OBTENIDO DEL EVENTO"+nombreCliente+"!!!!!!!!!!!!!!!!!!");
+        byte[] reportePdf = reporteService.exportToPdf(evento, nombreCliente);
+        enviarCorreoAsignacion(correoEmpleados);
+        enviarCorreoResumen(getUserById(evento.getIdCliente()).getEmail(), reportePdf);
 
-    public Evento saveEvento1( Evento evento){
 
-        Evento newEvento = eventoClient.save(evento);
-        return newEvento;
+        eventoClient.marcarComoPagado(idEvento);
+
+
     }
 
     public List<String> obtenerCorreosAdmins() {
@@ -152,5 +159,7 @@ public class UserServices {
 
         return emails;
     }
+
+
 
 }

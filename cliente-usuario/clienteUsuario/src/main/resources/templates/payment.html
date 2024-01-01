@@ -161,7 +161,7 @@
                     console.log('Pago realizado con éxito', details);
                     // Marcar eventos como "Pagado"
                     eventosAPagar.forEach(eventoId => {
-                        fetch(`http://localhost:8081/evento/marcarComoPagado/${eventoId}`, {
+                        fetch(`http://localhost:8081/user/marcarComoPagado/${eventoId}`, {
                             method: 'POST'
                         }).catch(error => console.error('Error:', error));
                     });
