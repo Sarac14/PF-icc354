@@ -20,13 +20,13 @@ public class Evento implements Serializable {
     private String tipoEvento;
     private boolean incluirVideo;
 
-    private boolean pagado;
+    private String pagado;
 
-    public boolean isPagado() {
+    public String isPagado() {
         return pagado;
     }
 
-    public void setPagado(boolean pagado) {
+    public void setPagado(String pagado) {
         this.pagado = pagado;
     }
 

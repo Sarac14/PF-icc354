@@ -249,6 +249,11 @@
             });
         });
 
+        const fechaEventoInput = document.getElementById('fechaEvento');
+        const fechaActual = new Date();
+        const diaSiguiente = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + 1);
+        fechaEventoInput.min = diaSiguiente.toISOString().split('T')[0];
+
         // Event listener para cancelar la ventana modal
         document.getElementById('cancelar').addEventListener('click', () => {
             cerrarYLimpiarModal();
@@ -313,7 +318,7 @@
             total: total,
             tipoEvento: tipoEventoSeleccionado,
             incluirVideo: incluirVideo,
-            pagado: false
+            pagado: "PENDIENTE"
         };
 
         axios.post(URL_API_EVENTOS, evento)

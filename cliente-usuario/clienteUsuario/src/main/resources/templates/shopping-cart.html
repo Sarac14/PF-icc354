@@ -171,6 +171,23 @@
 
 
 <script>
+
+    function actualizarEstadoBotonPago() {
+        // Obtener la referencia al botón de pago
+        const botonPago = document.getElementById('botonRealizarPago');
+
+        // Obtener la referencia al cuerpo de la tabla de compra
+        const tbodyCompra = document.getElementById('eventosCompraTable').getElementsByTagName('tbody')[0];
+
+        // Verificar si hay filas en la tabla de compra
+        if (tbodyCompra.rows.length === 0) {
+            // No hay filas, deshabilitar el botón de pago
+            botonPago.disabled = true;
+        } else {
+            // Hay filas, habilitar el botón de pago
+            botonPago.disabled = false;
+        }
+    }
     function obtenerIdCliente() {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -188,6 +205,7 @@
         }
     }
 
+
     let totalPagar = 0;
 
     function actualizarTotal() {
@@ -201,12 +219,13 @@
             return;
         }
 
-        fetch(`http://localhost:8081/evento/eventosNoPagados/${idCliente}`)
-    .then(response => response.json())
+        fetch(`http://localhost:8081/evento/eventosPendientes/${idCliente}`)
+            .then(response => response.json())
             .then(eventos => {
+                actualizarEstadoBotonPago();
                 const tbodyEventos = document.getElementById('eventosTable').getElementsByTagName('tbody')[0];
                 const tbodyCompra = document.getElementById('eventosCompraTable').getElementsByTagName('tbody')[0];
-
+                console.log("Cambiando A Pendiente")
                 eventos.forEach((evento, index) => {
                     let fila = tbodyEventos.insertRow();
                     fila.insertCell(0).innerHTML = evento.tipoEvento;
@@ -234,17 +253,38 @@
                         totalPagar += evento.total; // Suponiendo que evento.total es un número
                         actualizarTotal();
                         botonEliminar.onclick = function () {
-                            // Eliminar fila de la tabla de compras
+
                             tbodyCompra.deleteRow(filaCompra.rowIndex - 1);
                             // Reactivar el botón Pagar en la tabla de eventos
                             document.getElementById('pagar-' + index).disabled = false;
                             totalPagar -= evento.total;
                             actualizarTotal();
+
+                            // Hacer una solicitud al backend para marcar el evento como Pendiente
+                            fetch(`http://localhost:8081/evento/marcarComoPendiente/${evento.id}`, { method: 'POST' })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Error al marcar el evento como no pagado');
+                                    }
+                                    // Aquí puedes agregar lógica adicional si es necesario, por ejemplo, refrescar la lista de eventos
+                                    actualizarEstadoBotonPago();
+                                })
+                                .catch(error => console.error('Error:', error));
                         };
                         celdaAccionCompra.appendChild(botonEliminar);
 
+
                         // Deshabilitar el botón Pagar una vez que el evento se añade a la lista de compras
                         botonPagar.disabled = true;
+                        fetch(`http://localhost:8081/evento/marcarComoProcesando/${evento.id}`, { method: 'POST' })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Error al marcar el evento como pagado');
+                                }
+                                // Actualizar la interfaz de usuario según sea necesario
+                                actualizarEstadoBotonPago();
+                            })
+                            .catch(error => console.error('Error:', error));
                     };
 
                     celdaBoton.appendChild(botonPagar);
@@ -252,14 +292,6 @@
             })
             .catch(error => console.error('Error al obtener los eventos:', error));
     });
-
- /*   document.getElementById('botonRealizarPago').onclick = function () {
-        // Aquí puedes agregar cualquier lógica previa que necesites antes de la redirección
-        console.log('Realizando pago de:', totalPagar);
-
-        // Redireccionar a la nueva página HTML para el proceso de pago
-        window.location.href = 'payment.html';
-    };*/
 
 </script>
 </body>

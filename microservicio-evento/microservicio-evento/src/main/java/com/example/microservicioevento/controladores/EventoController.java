@@ -46,10 +46,9 @@ public class EventoController {
         return ResponseEntity.ok(evento);
     }
 
-
-    @GetMapping("/eventosNoPagados/{idCliente}")
+    @GetMapping("/eventosPendientes/{idCliente}")
     public ResponseEntity<List<Evento>> getEventosNoPagadosPorCliente(@PathVariable("idCliente") int idCliente) {
-        List<Evento> eventos = eventoServices.getEventosNoPagadosPorCliente(idCliente);
+        List<Evento> eventos = eventoServices.getEventosPendientesPorCliente(idCliente);
         if(eventos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -91,4 +90,44 @@ public class EventoController {
 
         return ResponseEntity.ok(updatedUserEntity);
     }
+
+    @PostMapping("/marcarComoPagado/{idEvento}")
+    public ResponseEntity<?> marcarEventoComoPagado(@PathVariable int idEvento) {
+        // Lógica para marcar el evento como pagado
+        eventoServices.marcarComoPagado(idEvento);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/marcarComoPendiente/{idEvento}")
+    public ResponseEntity<?> marcarEventoComoPendiente(@PathVariable int idEvento) {
+        // Lógica para marcar el evento como no pagado
+        eventoServices.marcarComoPendiente(idEvento);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/marcarComoProcesando/{idEvento}")
+    public ResponseEntity<?> marcarEventoComoProcesando(@PathVariable int idEvento) {
+        // Lógica para marcar el evento como no pagado
+        eventoServices.marcarComoProcesando(idEvento);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/eventosPagados/{idCliente}")
+    public ResponseEntity<List<Evento>> getEventosPagadosPorCliente(@PathVariable("idCliente") int idCliente) {
+        List<Evento> eventosPagados = eventoServices.getEventosPagadosPorCliente(idCliente);
+        if (eventosPagados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(eventosPagados);
+    }
+
+    @GetMapping("/eventosProcesando/{idCliente}")
+    public ResponseEntity<List<Evento>> getEventosProcesandoPorCliente(@PathVariable("idCliente") int idCliente) {
+        List<Evento> eventosPagados = eventoServices.getEventosProcesandoPorCliente(idCliente);
+        if (eventosPagados.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(eventosPagados);
+    }
+
 }
